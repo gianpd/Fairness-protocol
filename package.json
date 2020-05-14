@@ -2,11 +2,18 @@
   "name": "Fairness-consensus",
   "version": "0.0",
   "main": "index.js",
+  "scripts": {
+    "start:build": "tsc -w",
+    "start:run": "nodemon build /build/index.js",
+    "start": "concurrently npm:start:*"
+  },
   "repository": "https://github.com/GianPICT4SS/Fairness-protocol",
   "author": "GianPICT4SS",
   "license": "MIT",
   "private": true,
   "dependencies": {
-    "@tensorflow/tfjs-node": "^1.7.4"
+    "@tensorflow/tfjs-node": "^1.7.4",
+    "argparse": "1.0.10",
+    "typescript": "^3.9.2"
   }
 }
