@@ -1,0 +1,12 @@
+{
+  "name": "Fairness-consensus",
+  "version": "0.0",
+  "main": "index.js",
+  "repository": "https://github.com/GianPICT4SS/Fairness-protocol",
+  "author": "GianPICT4SS",
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "@tensorflow/tfjs-node": "^1.7.4"
+  }
+}
