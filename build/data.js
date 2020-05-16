@@ -181,7 +181,7 @@ class MnistDataset {
             labelOffset += 1;
         }
         return {
-            images: tf.tensor4d(images),
+            images: tf.tensor4d(images, [size, IMAGE_HEIGHT, IMAGE_WIDTH, 1]),
             labels: tf.oneHot(tf.tensor1d(labels, 'int32'), LABEL_FLAT_SIZE).toFloat()
         };
     }
