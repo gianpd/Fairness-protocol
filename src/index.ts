@@ -1,8 +1,69 @@
-import { Node, Graph, makeGraphFromNodes, nodes } from "./conflictGraph";
+import { Node, Graph, makeCGfromNodes } from "./conflictGraph";
 
-const graph = makeGraphFromNodes(nodes);
+let board1 = Date.now()
+let board2 = board1 + Date.now() + Math.random()
+let borard3 = board2 + Date.now() + Math.random()
+
+let nodes: Node[] = [
+    {
+       id: '0',
+       start: new Date('2020-01-01'),
+       utility: Math.random()*10,
+       balance: Math.random()*1000,
+       dependencies: new Map([
+           [board1, ['1']]
+       ])
+   },
+
+   {
+       id: '1',
+       start: new Date('2020-01-02'),
+       utility: Math.random()*10,
+       balance: Math.random()*1000,
+       dependencies: new Map([
+           [board1, ['0']]
+       ])
+   },
+
+   {
+       id: '2',
+       start: new Date('2020-01-02'),
+       utility: Math.random()*10,
+       balance: Math.random()*1000,
+       dependencies: new Map([
+           [board2, ['3', '4']]
+       ])
+   },
+
+   {
+       id: '3',
+       start: new Date('2020-01-02'),
+       utility: Math.random()*10,
+       balance: Math.random()*1000,
+       dependencies: new Map([
+           [board2, ['2', '4']]
+       ])
+   },
+
+   {
+       id: '4',
+       start: new Date('2020-01-02'),
+       utility: Math.random()*10,
+       balance: Math.random()*1000,
+       dependencies: new Map([
+           [board2, ['2', '3']],
+           [borard3, ['0', '1']]
+       ])
+   }
+]
+
+const graph = makeCGfromNodes(nodes);
 
 graph.forEach( edge => console.log(edge))
+
+
+
+
 
 
 

@@ -36,6 +36,7 @@ const https = require('https');
 const util = require('util');
 const zlib = require('zlib');
 const readFile = util.promisify(fs.readFile);
+let Shape;
 // MNIST data constants:
 const BASE_URL = 'https://storage.googleapis.com/cvdf-datasets/mnist/';
 const TRAIN_IMAGES_FILE = 'train-images-idx3-ubyte';

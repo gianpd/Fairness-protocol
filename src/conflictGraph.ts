@@ -1,96 +1,38 @@
 import { readSync } from "fs";
 
 type ID = string;
+type BoardMap = Map<number, ID[]>
 
 export type Node = {
     id: ID;
     start: Date;
     utility: number;
     balance: number;
-    //board: number[];
-    resourceId: ID;
-    dependencies?: ID[];
+    dependencies?: BoardMap
 
 }
 
-export type Graph = Map<ID, Set<ID>>;
+export type Graph = Map<ID, ID[][]>;
 
 /**
- * Graph from nodes: 
+ * Conflict Graph from nodes: creates a CG for nodes having dependencies
  */
 
- export const makeGraphFromNodes = (nodes: Node[]): Graph => {
+ export const makeCGfromNodes = (nodes: Node[]): Graph => {
      const graph: Graph = new Map();
-     const resources = new Map<ID, Node[]>();
+     //const resources = new Map<ID, Node[]>();
+     const conflict: ID[][] = []
      
      for (const n of nodes) {
-         const nodesForResource = resources.get(n.resourceId) ?? [];
-         nodesForResource.push(n);
-         resources.set(n.resourceId, nodesForResource);
-
-         graph.set(n.id,  new Set(n.dependencies ?? []));
-     }
-
-     for (const nodesForResource of resources.values()) {
-         // sort by position
-         nodesForResource.sort((a,b) => a.utility - b.utility);
-
-         // 
-         let prevNodes: Node | undefined;
-         for (const node of nodesForResource) {
-             if (prevNodes) {
-                 graph.get(prevNodes.id)?.add(node.id);
-             }
-             prevNodes = node;
+         console.log('node id: ', n.id, 'dependecies: ', n.dependencies)
+         if (n.dependencies) {
+            for ( const d of n.dependencies.values() ) {
+                conflict.push(d)
+                //graph.set(n.id,  d);
+            }
+            graph.set(n.id,  conflict);
          }
-     }
+      }
+      return graph;
+    };
 
-     return graph;
-
- };
-
- export let nodes: Node[] = [
-     {
-        id: '0',
-        start: new Date('2020-01-01'),
-        utility: Math.random()*10,
-        balance: Math.random()*1000,
-        resourceId: 'Alice'
-    },
-
-    {
-        id: '1',
-        start: new Date('2020-01-02'),
-        utility: Math.random()*10,
-        balance: Math.random()*1000,
-        resourceId: 'Alice',
-        dependencies: ['0']
-    },
-
-    {
-        id: '2',
-        start: new Date('2020-01-02'),
-        utility: Math.random()*10,
-        balance: Math.random()*1000,
-        resourceId: 'Bob',
-        dependencies: ['1', '0']
-    },
-
-    {
-        id: '3',
-        start: new Date('2020-01-02'),
-        utility: Math.random()*10,
-        balance: Math.random()*1000,
-        resourceId: 'Carlo',
-        //dependencies: ['0']
-    },
-
-    {
-        id: '4',
-        start: new Date('2020-01-02'),
-        utility: Math.random()*10,
-        balance: Math.random()*1000,
-        resourceId: 'Bob',
-        dependencies: ['0', '2']
-    }
- ]
