@@ -48,12 +48,12 @@ let nodes = [
         balance: Math.random() * 1000,
         dependencies: new Map([
             [board2, ['2', '3']],
-            [borard3, ['0', '1']]
+            [borard3, ['0', '1', '3']]
         ])
     }
 ];
 const graph = conflictGraph_1.makeCGfromNodes(nodes);
-graph.forEach(edge => console.log(edge));
+graph.forEach((key, value) => (console.log(value, ' => ', key)));
 /**
  * //const tf = require('@tensorflow/tfjs')
 //require('@tensorflow/tfjs-node')

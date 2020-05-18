@@ -1,7 +1,8 @@
-import { readSync } from "fs";
+import { stringify } from "querystring";
 
-type ID = string;
-type BoardMap = Map<number, ID[]>
+
+export type ID = string;
+export type BoardMap = Map<number, ID[]>
 
 export type Node = {
     id: ID;
@@ -12,7 +13,7 @@ export type Node = {
 
 }
 
-export type Graph = Map<ID, ID[][]>;
+export type Graph = Map<ID, Set<ID[]>>;
 
 /**
  * Conflict Graph from nodes: creates a CG for nodes having dependencies
@@ -20,19 +21,16 @@ export type Graph = Map<ID, ID[][]>;
 
  export const makeCGfromNodes = (nodes: Node[]): Graph => {
      const graph: Graph = new Map();
-     //const resources = new Map<ID, Node[]>();
-     const conflict: ID[][] = []
+     //const conflict: ID[] = [];
      
      for (const n of nodes) {
          console.log('node id: ', n.id, 'dependecies: ', n.dependencies)
          if (n.dependencies) {
-            for ( const d of n.dependencies.values() ) {
-                conflict.push(d)
-                //graph.set(n.id,  d);
-            }
-            graph.set(n.id,  conflict);
-         }
-      }
-      return graph;
+             graph.set(n.id, new Set([...n.dependencies.values()]))
+        }
+    }
+    
+    return graph;
     };
+
 

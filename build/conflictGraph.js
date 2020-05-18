@@ -6,16 +6,11 @@ exports.makeCGfromNodes = void 0;
  */
 exports.makeCGfromNodes = (nodes) => {
     const graph = new Map();
-    //const resources = new Map<ID, Node[]>();
-    const conflict = [];
+    //const conflict: ID[] = [];
     for (const n of nodes) {
         console.log('node id: ', n.id, 'dependecies: ', n.dependencies);
         if (n.dependencies) {
-            for (const d of n.dependencies.values()) {
-                conflict.push(d);
-                //graph.set(n.id,  d);
-            }
-            graph.set(n.id, conflict);
+            graph.set(n.id, new Set([...n.dependencies.values()]));
         }
     }
     return graph;
