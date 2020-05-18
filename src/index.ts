@@ -1,14 +1,48 @@
+import { Node, Graph, makeGraphFromNodes, nodes } from "./conflictGraph";
 
-//const tf = require('@tensorflow/tfjs')
+const graph = makeGraphFromNodes(nodes);
+
+graph.forEach( edge => console.log(edge))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/**
+ * //const tf = require('@tensorflow/tfjs')
 //require('@tensorflow/tfjs-node')
 import * as tf from '@tensorflow/tfjs'
-
-
 
 const argparse = require('argparse')
 
 const data = require('./data');
 const model = require('./model');
+
+
+
 
 async function run(epochs: any, batchSize: any, modelSavePath: any) {
     await data.loadData();
@@ -64,3 +98,4 @@ async function run(epochs: any, batchSize: any, modelSavePath: any) {
   const args = parser.parseArgs();
   
   run(args.epochs, args.batch_size, args.model_save_path);
+ */

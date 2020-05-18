@@ -10,6 +10,12 @@ const zlib = require('zlib');
 
 const readFile = util.promisify(fs.readFile);
 
+let Shape: {
+  d1: number
+  d2: number
+  d3: number
+  d4: number
+}
 // MNIST data constants:
 const BASE_URL = 'https://storage.googleapis.com/cvdf-datasets/mnist/';
 const TRAIN_IMAGES_FILE = 'train-images-idx3-ubyte';
@@ -169,6 +175,8 @@ class MnistDataset {
     //imagesShape.push({s: [size, IMAGE_HEIGHT, IMAGE_WIDTH, 1]})
     const images = new Float32Array(tf.util.sizeFromShape(imagesShape));
     const labels = new Int32Array(tf.util.sizeFromShape([size, 1]));
+    
+  
 
     let imageOffset = 0;
     let labelOffset = 0;
