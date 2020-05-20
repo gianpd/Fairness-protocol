@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.makeCGfromNodes = void 0;
+exports.get_utilities = exports.makeCGfromNodes = void 0;
 /**
  * Conflict Graph from nodes: creates a CG for nodes having dependencies
  */
@@ -14,4 +14,9 @@ exports.makeCGfromNodes = (nodes) => {
         }
     }
     return graph;
+};
+exports.get_utilities = (nodes) => {
+    let utilities = [];
+    nodes.forEach(n => utilities.push(n.utility));
+    return utilities;
 };

@@ -1,4 +1,5 @@
-import { Node, Graph, makeCGfromNodes } from "./conflictGraph";
+import { Node, Graph, makeCGfromNodes, get_utilities } from "./conflictGraph";
+import { recursive_cg_solve } from './solver'
 
 let board1 = Date.now()
 let board2 = board1 + Date.now() + Math.random()
@@ -8,7 +9,7 @@ let nodes: Node[] = [
     {
        id: '0',
        start: new Date('2020-01-01'),
-       utility: Math.random()*10,
+       utility: 100,
        balance: Math.random()*1000,
        dependencies: new Map([
            [board1, ['1']]
@@ -18,7 +19,7 @@ let nodes: Node[] = [
    {
        id: '1',
        start: new Date('2020-01-02'),
-       utility: Math.random()*10,
+       utility: 70,
        balance: Math.random()*1000,
        dependencies: new Map([
            [board1, ['0']]
@@ -28,7 +29,7 @@ let nodes: Node[] = [
    {
        id: '2',
        start: new Date('2020-01-02'),
-       utility: Math.random()*10,
+       utility: 5600,
        balance: Math.random()*1000,
        dependencies: new Map([
            [board2, ['3', '4']]
@@ -38,7 +39,7 @@ let nodes: Node[] = [
    {
        id: '3',
        start: new Date('2020-01-02'),
-       utility: Math.random()*10,
+       utility: 500,
        balance: Math.random()*1000,
        dependencies: new Map([
            [board2, ['2', '4']]
@@ -48,19 +49,23 @@ let nodes: Node[] = [
    {
        id: '4',
        start: new Date('2020-01-02'),
-       utility: Math.random()*10,
+       utility: 10,
        balance: Math.random()*1000,
        dependencies: new Map([
            [board2, ['2', '3']],
-           [borard3, ['0', '1', '3']]
-       ])
+           ])
    }
 ]
 
+const utilities = get_utilities(nodes)
 const graph = makeCGfromNodes(nodes);
 
 graph.forEach((key, value) => (console.log(value, ' => ', key)))
 
+console.log('***Start solver')
+const cg = recursive_cg_solve(graph, utilities, 0)
+
+console.log(cg)
 
 
 

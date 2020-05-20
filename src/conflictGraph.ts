@@ -1,6 +1,3 @@
-import { stringify } from "querystring";
-
-
 export type ID = string;
 export type BoardMap = Map<number, ID[]>
 
@@ -34,3 +31,10 @@ export type Graph = Map<ID, Set<ID[]>>;
     };
 
 
+export const get_utilities = (nodes: Node[]): number[] => {
+
+    let utilities: number[] = []
+    nodes.forEach(n => utilities.push(n.utility))
+
+    return utilities
+}
