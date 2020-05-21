@@ -1,5 +1,5 @@
 import {Graph, makeCGfromNodes, get_utilities } from './conflictGraph'
-import { any } from '@tensorflow/tfjs'
+
 
 
 export const recursive_cg_solve = (cg: Graph, utilities: number[], n: number): Graph|undefined => {
@@ -10,7 +10,7 @@ export const recursive_cg_solve = (cg: Graph, utilities: number[], n: number): G
     console.log(`Utilities of ${init_CGnodes[n]}: ${u}`)
     const nodes_conf_n = cg.get(n.toString())
 
-    let nodes_deleted: any = []
+    let nodes_deleted: number[] = []
 
        
 
@@ -52,7 +52,7 @@ export const recursive_cg_solve = (cg: Graph, utilities: number[], n: number): G
                 for (let c of nodes_conf_n) {
                     c.forEach(e => cg.delete(e))
                     c.forEach(e => console.log(`Nodes deleted: ${e}`))
-                    c.forEach(e => nodes_deleted.push(e))
+                    c.forEach(e => nodes_deleted.push(parseFloat(e)))
                     
                 }
             }
@@ -79,5 +79,4 @@ export const recursive_cg_solve = (cg: Graph, utilities: number[], n: number): G
             return cg
         }
     }
-}
 }
