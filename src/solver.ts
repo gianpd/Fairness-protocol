@@ -39,7 +39,7 @@ export const recursive_cg_solve = (cg: Graph, utilities: number[], n: number): G
             n += 1
             if ( n <= init_CGnodes.length) {
                 console.log('Recursive')
-                console.log('cosa resta di cg: ', cg)
+                console.log('Remained nodes: ', cg)
                 return recursive_cg_solve(cg, utilities, n)
             }
             else {
@@ -60,7 +60,7 @@ export const recursive_cg_solve = (cg: Graph, utilities: number[], n: number): G
             n += 1
             if (n <= init_CGnodes.length) {
                 console.log('Recursive')
-                console.log('cosa resta di cg: ', cg)
+                console.log('Remained nodes: ', cg)
                 return recursive_cg_solve(cg, utilities, n)
             }
             else {
@@ -72,7 +72,7 @@ export const recursive_cg_solve = (cg: Graph, utilities: number[], n: number): G
         n += 1
         if (n <= init_CGnodes.length) {
             console.log('Recursive')
-            console.log('cosa resta di cg: ', cg)
+            console.log('Remained nodes: ', cg)
             return recursive_cg_solve(cg, utilities, n)
         }
         else {
