@@ -33,7 +33,7 @@ exports.recursive_cg_solve = (cg, utilities, n) => {
             n += 1;
             if (n <= init_CGnodes.length) {
                 console.log('Recursive');
-                console.log('cosa resta di cg: ', cg);
+                console.log('Remained nodes: ', cg);
                 return exports.recursive_cg_solve(cg, utilities, n);
             }
             else {
@@ -46,14 +46,14 @@ exports.recursive_cg_solve = (cg, utilities, n) => {
                 for (let c of nodes_conf_n) {
                     c.forEach(e => cg.delete(e));
                     c.forEach(e => console.log(`Nodes deleted: ${e}`));
-                    c.forEach(e => nodes_deleted.push(e));
+                    c.forEach(e => nodes_deleted.push(parseFloat(e)));
                 }
             }
             nodes_deleted.forEach(e => console.log('LS Nodes deleted: ', e));
             n += 1;
             if (n <= init_CGnodes.length) {
                 console.log('Recursive');
-                console.log('cosa resta di cg: ', cg);
+                console.log('Remained nodes: ', cg);
                 return exports.recursive_cg_solve(cg, utilities, n);
             }
             else {
@@ -65,7 +65,7 @@ exports.recursive_cg_solve = (cg, utilities, n) => {
         n += 1;
         if (n <= init_CGnodes.length) {
             console.log('Recursive');
-            console.log('cosa resta di cg: ', cg);
+            console.log('Remained nodes: ', cg);
             return exports.recursive_cg_solve(cg, utilities, n);
         }
         else {
