@@ -75,3 +75,50 @@ export const recursive_cg_solve = (cg: Graph, utilities: Map<string, number>, n:
         }
     }
 }
+
+export let mwis_dp = (cg: Graph, utilities: Map<string, number>): number[]|undefined => {
+
+    const nVertex = [...cg.keys()].length
+
+    const vertexUtility: number[] = []
+    vertexUtility.push(0)
+
+    for (let value of utilities.values()) {
+        vertexUtility.push(value)
+    }
+
+    // the following code evaluates the maximum weight independent set of the graph using the
+    // dynamic programming technique
+
+    // this array will be used to perform the bottom-up computation
+    let maxSetComputation: number[] = []
+    maxSetComputation.push(0)
+    maxSetComputation.push(vertexUtility[1])
+
+    for (let i = 2; i < nVertex + 1; ++i) {
+        maxSetComputation.push(Math.max(maxSetComputation[i-1], maxSetComputation[i-2] + 
+            vertexUtility[i]))
+    }
+
+    let i = nVertex
+    let optimalVertex: number[] = []
+
+    while (i > 1) {
+        if (maxSetComputation[i-2] + vertexUtility[i] > maxSetComputation[i-1]){
+            optimalVertex.push(i)
+            i-=2
+
+            if(i==1) {
+                optimalVertex.push(i)
+                break
+            }
+        }
+        else {
+            i--
+        }
+        return optimalVertex
+    }
+
+}
+
+

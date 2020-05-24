@@ -1,5 +1,5 @@
 import { Node, Graph, makeCGfromNodes, get_utilities } from "./conflictGraph";
-import { recursive_cg_solve } from './solver'
+import { recursive_cg_solve, mwis_dp } from './solver'
 
 let board1 = Date.now()
 let board2 = board1 + Date.now() + Math.random()
@@ -60,6 +60,9 @@ let nodes: Node[] = [
 const utilities = get_utilities(nodes)  //Map(ID, Utility)
 const graph = makeCGfromNodes(nodes);
 
+const optimalVertex = mwis_dp(graph, utilities)
+
+console.log('Optimal solution: ', optimalVertex)
 graph.forEach((key, value) => (console.log(value, ' => ', key)))
 
 console.log('***Start solver')

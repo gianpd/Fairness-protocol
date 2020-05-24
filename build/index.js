@@ -54,6 +54,8 @@ let nodes = [
 ];
 const utilities = conflictGraph_1.get_utilities(nodes); //Map(ID, Utility)
 const graph = conflictGraph_1.makeCGfromNodes(nodes);
+const optimalVertex = solver_1.mwis_dp(graph, utilities);
+console.log('Optimal solution: ', optimalVertex);
 graph.forEach((key, value) => (console.log(value, ' => ', key)));
 console.log('***Start solver');
 const cg = solver_1.recursive_cg_solve(graph, utilities, 0);

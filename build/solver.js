@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.recursive_cg_solve = void 0;
+exports.mwis_dp = exports.recursive_cg_solve = void 0;
 const pass = () => { return 0; };
 exports.recursive_cg_solve = (cg, utilities, n) => {
     var _a;
@@ -67,5 +67,39 @@ exports.recursive_cg_solve = (cg, utilities, n) => {
         else {
             return cg;
         }
+    }
+};
+exports.mwis_dp = (cg, utilities) => {
+    const nVertex = [...cg.keys()].length;
+    const vertexUtility = [];
+    vertexUtility.push(0);
+    for (let value of utilities.values()) {
+        vertexUtility.push(value);
+    }
+    // the following code evaluates the maximum weight independent set of the graph using the
+    // dynamic programming technique
+    // this array will be used to perform the bottom-up computation
+    let maxSetComputation = [];
+    maxSetComputation.push(0);
+    maxSetComputation.push(vertexUtility[1]);
+    for (let i = 2; i < nVertex + 1; ++i) {
+        maxSetComputation.push(Math.max(maxSetComputation[i - 1], maxSetComputation[i - 2] +
+            vertexUtility[i]));
+    }
+    let i = nVertex;
+    let optimalVertex = [];
+    while (i > 1) {
+        if (maxSetComputation[i - 2] + vertexUtility[i] > maxSetComputation[i - 1]) {
+            optimalVertex.push(i);
+            i -= 2;
+            if (i == 1) {
+                optimalVertex.push(i);
+                break;
+            }
+        }
+        else {
+            i--;
+        }
+        return optimalVertex;
     }
 };
