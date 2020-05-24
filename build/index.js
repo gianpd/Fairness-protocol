@@ -27,7 +27,7 @@ let nodes = [
     {
         id: '2',
         start: new Date('2020-01-02'),
-        utility: 5600,
+        utility: 560,
         balance: Math.random() * 1000,
         dependencies: new Map([
             [board2, ['3', '4']]
@@ -52,7 +52,7 @@ let nodes = [
         ])
     }
 ];
-const utilities = conflictGraph_1.get_utilities(nodes);
+const utilities = conflictGraph_1.get_utilities(nodes); //Map(ID, Utility)
 const graph = conflictGraph_1.makeCGfromNodes(nodes);
 graph.forEach((key, value) => (console.log(value, ' => ', key)));
 console.log('***Start solver');

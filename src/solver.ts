@@ -1,41 +1,39 @@
 import {Graph, makeCGfromNodes, get_utilities } from './conflictGraph'
+import { util } from '@tensorflow/tfjs'
 
+const pass = (): number => {return 0}
 
+export const recursive_cg_solve = (cg: Graph, utilities: Map<string, number>, n: number): Graph|undefined => {
 
-export const recursive_cg_solve = (cg: Graph, utilities: number[], n: number): Graph|undefined => {
+    let nodes_conf_n: string[] = []
 
-    const init_CGnodes = [...cg.keys()] 
+    const init_CGnodes = [...cg.keys()] //initial nodes
     console.log('Initial conflict nodes: ', init_CGnodes)
-    const u = utilities[parseFloat(init_CGnodes[n])]
-    console.log(`Utilities of ${init_CGnodes[n]}: ${u}`)
-    const nodes_conf_n = cg.get(n.toString())
+    const testedNode = n.toString()
+    console.log('Tested node: ', testedNode)
+    // calculate utilities of consflict nodes
+    const u = utilities.get(testedNode) ?? pass() //utility test node
+    //let u_conf = 0
+    //nodes_conf_n.forEach(e => u_conf += utilities.get(e))
+    console.log(`Utility node ${n}: ${u}`)
 
-    let nodes_deleted: number[] = []
+    let nodes_deleted: string[] = []
 
-       
-
-    if ( cg.has(n.toString())) {
-        const nodes_conf_n = cg.get(n.toString())
-    }
-        nodes_conf_n?.forEach(e => console.log(`Nodes in conflict with ${n}: ${e}`))
-        const n_conflicts = nodes_conf_n?.size
+    if ( cg.has(testedNode)) {
+        const nodes_conf_set = cg.get(testedNode)
+        nodes_conf_set?.forEach(e => e.forEach( s => nodes_conf_n.push(s)))
+        
+        nodes_conf_n.forEach(e => console.log(`Node in conflict with ${n.toString()}: ${e}`))
+        const n_conflicts = nodes_conf_n.length
         console.log('number of conflits: ', n_conflicts)
-        //initialize the total utility of the nodes in conflict with n
-        let ut_conf = 0
-        //compute the total utility of the conflict nodes of n
-        if (nodes_conf_n) {
-            for (let c of nodes_conf_n) {
-                c.forEach(e => ut_conf += utilities[parseFloat(e)])
-            }
-        }
-        console.log('Total utility nodes: ', ut_conf)
-        if (n_conflicts) {
-            if (ut_conf > u*n_conflicts) {
-            //remove node n from the final solution
-            cg.delete(n.toString())
-            nodes_deleted.push(n)  //take memory for final solution
+        let u_conf = 0
+        nodes_conf_n.forEach(e => u_conf += utilities.get(e) ?? pass())
+        console.log(`Total utility conflict nodes: ${u_conf}`)
+        if (u_conf > u*n_conflicts) {
+            cg.delete(testedNode)
+            nodes_deleted.push(testedNode)  //take memory for final solution
             nodes_deleted.forEach(e => console.log(`nodes deleted: ${e}`))
-            cg.forEach(e => console.log(`Nodes in CG: ${e}`))
+           //cg.forEach(e => console.log(`Nodes in CG: ${e}`))
             n += 1
             if ( n <= init_CGnodes.length) {
                 console.log('Recursive')
@@ -44,19 +42,16 @@ export const recursive_cg_solve = (cg: Graph, utilities: number[], n: number): G
             }
             else {
                 return cg 
-            }
+                }
         }
+        
         else {
             // do not exclude node n, so delete others
-            if (nodes_conf_n) {
-                for (let c of nodes_conf_n) {
-                    c.forEach(e => cg.delete(e))
-                    c.forEach(e => console.log(`Nodes deleted: ${e}`))
-                    c.forEach(e => nodes_deleted.push(parseFloat(e)))
-                    
-                }
+            for (let c of nodes_conf_n) {
+                cg.delete(c)
+                nodes_deleted.push(c)
             }
-            nodes_deleted.forEach(e => console.log('LS Nodes deleted: ', e))
+            nodes_deleted.forEach(e => console.log('Nodes deleted: ', e))
             n += 1
             if (n <= init_CGnodes.length) {
                 console.log('Recursive')

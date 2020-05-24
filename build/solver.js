@@ -1,35 +1,34 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.recursive_cg_solve = void 0;
+const pass = () => { return 0; };
 exports.recursive_cg_solve = (cg, utilities, n) => {
-    const init_CGnodes = [...cg.keys()];
+    var _a;
+    let nodes_conf_n = [];
+    const init_CGnodes = [...cg.keys()]; //initial nodes
     console.log('Initial conflict nodes: ', init_CGnodes);
-    const u = utilities[parseFloat(init_CGnodes[n])];
-    console.log(`Utilities of ${init_CGnodes[n]}: ${u}`);
-    const nodes_conf_n = cg.get(n.toString());
+    const testedNode = n.toString();
+    console.log('Tested node: ', testedNode);
+    // calculate utilities of consflict nodes
+    const u = (_a = utilities.get(testedNode)) !== null && _a !== void 0 ? _a : pass(); //utility test node
+    //let u_conf = 0
+    //nodes_conf_n.forEach(e => u_conf += utilities.get(e))
+    console.log(`Utility node ${n}: ${u}`);
     let nodes_deleted = [];
-    if (cg.has(n.toString())) {
-        const nodes_conf_n = cg.get(n.toString());
-    }
-    nodes_conf_n === null || nodes_conf_n === void 0 ? void 0 : nodes_conf_n.forEach(e => console.log(`Nodes in conflict with ${n}: ${e}`));
-    const n_conflicts = nodes_conf_n === null || nodes_conf_n === void 0 ? void 0 : nodes_conf_n.size;
-    console.log('number of conflits: ', n_conflicts);
-    //initialize the total utility of the nodes in conflict with n
-    let ut_conf = 0;
-    //compute the total utility of the conflict nodes of n
-    if (nodes_conf_n) {
-        for (let c of nodes_conf_n) {
-            c.forEach(e => ut_conf += utilities[parseFloat(e)]);
-        }
-    }
-    console.log('Total utility nodes: ', ut_conf);
-    if (n_conflicts) {
-        if (ut_conf > u * n_conflicts) {
-            //remove node n from the final solution
-            cg.delete(n.toString());
-            nodes_deleted.push(n); //take memory for final solution
+    if (cg.has(testedNode)) {
+        const nodes_conf_set = cg.get(testedNode);
+        nodes_conf_set === null || nodes_conf_set === void 0 ? void 0 : nodes_conf_set.forEach(e => e.forEach(s => nodes_conf_n.push(s)));
+        nodes_conf_n.forEach(e => console.log(`Node in conflict with ${n.toString()}: ${e}`));
+        const n_conflicts = nodes_conf_n.length;
+        console.log('number of conflits: ', n_conflicts);
+        let u_conf = 0;
+        nodes_conf_n.forEach(e => { var _a; return u_conf += (_a = utilities.get(e)) !== null && _a !== void 0 ? _a : pass(); });
+        console.log(`Total utility conflict nodes: ${u_conf}`);
+        if (u_conf > u * n_conflicts) {
+            cg.delete(testedNode);
+            nodes_deleted.push(testedNode); //take memory for final solution
             nodes_deleted.forEach(e => console.log(`nodes deleted: ${e}`));
-            cg.forEach(e => console.log(`Nodes in CG: ${e}`));
+            //cg.forEach(e => console.log(`Nodes in CG: ${e}`))
             n += 1;
             if (n <= init_CGnodes.length) {
                 console.log('Recursive');
@@ -42,14 +41,11 @@ exports.recursive_cg_solve = (cg, utilities, n) => {
         }
         else {
             // do not exclude node n, so delete others
-            if (nodes_conf_n) {
-                for (let c of nodes_conf_n) {
-                    c.forEach(e => cg.delete(e));
-                    c.forEach(e => console.log(`Nodes deleted: ${e}`));
-                    c.forEach(e => nodes_deleted.push(parseFloat(e)));
-                }
+            for (let c of nodes_conf_n) {
+                cg.delete(c);
+                nodes_deleted.push(c);
             }
-            nodes_deleted.forEach(e => console.log('LS Nodes deleted: ', e));
+            nodes_deleted.forEach(e => console.log('Nodes deleted: ', e));
             n += 1;
             if (n <= init_CGnodes.length) {
                 console.log('Recursive');

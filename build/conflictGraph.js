@@ -16,7 +16,8 @@ exports.makeCGfromNodes = (nodes) => {
     return graph;
 };
 exports.get_utilities = (nodes) => {
-    let utilities = [];
-    nodes.forEach(n => utilities.push(n.utility));
+    let utilities = new Map();
+    //nodes.forEach(n => utilities.push(n.utility))
+    nodes.forEach(n => utilities.set(n.id, n.utility));
     return utilities;
 };

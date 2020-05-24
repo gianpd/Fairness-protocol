@@ -29,7 +29,7 @@ let nodes: Node[] = [
    {
        id: '2',
        start: new Date('2020-01-02'),
-       utility: 5600,
+       utility: 560,
        balance: Math.random()*1000,
        dependencies: new Map([
            [board2, ['3', '4']]
@@ -57,7 +57,7 @@ let nodes: Node[] = [
    }
 ]
 
-const utilities = get_utilities(nodes)
+const utilities = get_utilities(nodes)  //Map(ID, Utility)
 const graph = makeCGfromNodes(nodes);
 
 graph.forEach((key, value) => (console.log(value, ' => ', key)))
