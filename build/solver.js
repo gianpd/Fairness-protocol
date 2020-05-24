@@ -4,18 +4,18 @@ exports.mwis_dp = exports.recursive_cg_solve = void 0;
 const pass = () => { return 0; };
 exports.recursive_cg_solve = (cg, utilities, n) => {
     var _a;
-    let nodes_conf_n = [];
     const init_CGnodes = [...cg.keys()]; //initial nodes
-    console.log('Initial conflict nodes: ', init_CGnodes);
-    const testedNode = n.toString();
-    console.log('Tested node: ', testedNode);
-    // calculate utilities of consflict nodes
-    const u = (_a = utilities.get(testedNode)) !== null && _a !== void 0 ? _a : pass(); //utility test node
-    //let u_conf = 0
-    //nodes_conf_n.forEach(e => u_conf += utilities.get(e))
-    console.log(`Utility node ${n}: ${u}`);
-    let nodes_deleted = [];
-    if (cg.has(testedNode)) {
+    if (cg.has(n.toString())) {
+        let nodes_conf_n = [];
+        console.log('Initial conflict nodes: ', init_CGnodes);
+        const testedNode = n.toString();
+        console.log('Tested node: ', testedNode);
+        // calculate utilities of consflict nodes
+        const u = (_a = utilities.get(testedNode)) !== null && _a !== void 0 ? _a : pass(); //utility test node
+        //let u_conf = 0
+        //nodes_conf_n.forEach(e => u_conf += utilities.get(e))
+        console.log(`Utility node ${n}: ${u}`);
+        let nodes_deleted = [];
         const nodes_conf_set = cg.get(testedNode);
         nodes_conf_set === null || nodes_conf_set === void 0 ? void 0 : nodes_conf_set.forEach(e => e.forEach(s => nodes_conf_n.push(s)));
         nodes_conf_n.forEach(e => console.log(`Node in conflict with ${n.toString()}: ${e}`));
@@ -58,6 +58,7 @@ exports.recursive_cg_solve = (cg, utilities, n) => {
         }
     }
     else {
+        console.log(`node ${n} already excluded...`);
         n += 1;
         if (n <= init_CGnodes.length) {
             console.log('Recursive');
@@ -70,36 +71,37 @@ exports.recursive_cg_solve = (cg, utilities, n) => {
     }
 };
 exports.mwis_dp = (cg, utilities) => {
+    /**
+    * A Dynamic Programming heuristic algorithm for solving:
+    max. sum_i[(a_i)*x_i)]
+    s.t  x_i + x_j <= 1 if (i,j) in CF, where CF is the Conflict Graph for the problem.
+    *
+    * complexity O(n) where n is the number of nodes in the CG
+    */
+    var _a;
+    // global variables
     const nVertex = [...cg.keys()].length;
-    const vertexUtility = [];
-    vertexUtility.push(0);
-    for (let value of utilities.values()) {
-        vertexUtility.push(value);
-    }
-    // the following code evaluates the maximum weight independent set of the graph using the
-    // dynamic programming technique
-    // this array will be used to perform the bottom-up computation
-    let maxSetComputation = [];
-    maxSetComputation.push(0);
-    maxSetComputation.push(vertexUtility[1]);
-    for (let i = 2; i < nVertex + 1; ++i) {
-        maxSetComputation.push(Math.max(maxSetComputation[i - 1], maxSetComputation[i - 2] +
-            vertexUtility[i]));
-    }
-    let i = nVertex;
-    let optimalVertex = [];
-    while (i > 1) {
-        if (maxSetComputation[i - 2] + vertexUtility[i] > maxSetComputation[i - 1]) {
-            optimalVertex.push(i);
-            i -= 2;
-            if (i == 1) {
-                optimalVertex.push(i);
-                break;
-            }
+    console.log('nVertex: ', nVertex);
+    const opt_sol = [];
+    for (let i = 0; i < nVertex; i++) {
+        if (cg.has(i.toString())) {
+            const conf_nodes = cg.get(i.toString()); //conflict nodes of i
+            console.log('conflict nodes: ', conf_nodes);
+            const u_tot = [];
+            u_tot.push((_a = utilities.get(i.toString())) !== null && _a !== void 0 ? _a : pass());
+            // fill u_tot with total utilities
+            conf_nodes === null || conf_nodes === void 0 ? void 0 : conf_nodes.forEach(e => e.forEach(s => { var _a; return u_tot.push((_a = utilities.get(s)) !== null && _a !== void 0 ? _a : pass()); }));
+            console.log('u_tot: ', u_tot);
+            // max utility
+            const max_u = Math.max(...u_tot);
+            console.log('max utility: ', max_u);
+            // get node with utility equal to max_u
+            const opt_node = [...utilities.keys()].find(key => utilities.get(key) == max_u);
+            console.log('opt_node: ', opt_node);
+            opt_sol.push(opt_node !== null && opt_node !== void 0 ? opt_node : pass().toString());
+            conf_nodes === null || conf_nodes === void 0 ? void 0 : conf_nodes.delete(opt_sol);
+            conf_nodes === null || conf_nodes === void 0 ? void 0 : conf_nodes.forEach(e => e.forEach(s => cg.delete(s)));
         }
-        else {
-            i--;
-        }
-        return optimalVertex;
     }
+    return opt_sol;
 };

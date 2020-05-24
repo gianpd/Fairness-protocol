@@ -39,7 +39,7 @@ let nodes: Node[] = [
    {
        id: '3',
        start: new Date('2020-01-02'),
-       utility: 500,
+       utility: 580,
        balance: Math.random()*1000,
        dependencies: new Map([
            [board2, ['2', '4']]
@@ -49,7 +49,7 @@ let nodes: Node[] = [
    {
        id: '4',
        start: new Date('2020-01-02'),
-       utility: 10,
+       utility: 1000,
        balance: Math.random()*1000,
        dependencies: new Map([
            [board2, ['2', '3']],
@@ -58,17 +58,16 @@ let nodes: Node[] = [
 ]
 
 const utilities = get_utilities(nodes)  //Map(ID, Utility)
+
 const graph = makeCGfromNodes(nodes);
 
-const optimalVertex = mwis_dp(graph, utilities)
 
-console.log('Optimal solution: ', optimalVertex)
-graph.forEach((key, value) => (console.log(value, ' => ', key)))
-
-console.log('***Start solver')
+console.log('*****Start solver*****')
+const opt_sol = mwis_dp(graph, utilities)
+console.log(' MWIS Dynamic Programming Solution: ', opt_sol)
+console.log('===== Recursive algorithm started =====')
 const cg = recursive_cg_solve(graph, utilities, 0)
-
-console.log(cg)
+console.log('Recursive solution: ', cg)
 
 
 

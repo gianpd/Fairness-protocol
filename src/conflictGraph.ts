@@ -10,6 +10,8 @@ export type Node = {
 
 }
 
+
+
 export type Graph = Map<ID, Set<ID[]>>;
 
 /**
@@ -33,8 +35,10 @@ export type Graph = Map<ID, Set<ID[]>>;
 
 export const get_utilities = (nodes: Node[]): Map<string, number> => {
 
+    
     let utilities: Map<string, number> = new Map();
     //nodes.forEach(n => utilities.push(n.utility))
     nodes.forEach(n => utilities.set(n.id, n.utility))
+    
     return utilities
 }

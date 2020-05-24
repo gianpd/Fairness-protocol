@@ -36,7 +36,7 @@ let nodes = [
     {
         id: '3',
         start: new Date('2020-01-02'),
-        utility: 500,
+        utility: 580,
         balance: Math.random() * 1000,
         dependencies: new Map([
             [board2, ['2', '4']]
@@ -45,7 +45,7 @@ let nodes = [
     {
         id: '4',
         start: new Date('2020-01-02'),
-        utility: 10,
+        utility: 1000,
         balance: Math.random() * 1000,
         dependencies: new Map([
             [board2, ['2', '3']],
@@ -54,12 +54,12 @@ let nodes = [
 ];
 const utilities = conflictGraph_1.get_utilities(nodes); //Map(ID, Utility)
 const graph = conflictGraph_1.makeCGfromNodes(nodes);
-const optimalVertex = solver_1.mwis_dp(graph, utilities);
-console.log('Optimal solution: ', optimalVertex);
-graph.forEach((key, value) => (console.log(value, ' => ', key)));
-console.log('***Start solver');
+console.log('*****Start solver*****');
+const opt_sol = solver_1.mwis_dp(graph, utilities);
+console.log(' MWIS Dynamic Programming Solution: ', opt_sol);
+console.log('===== Recursive algorithm started =====');
 const cg = solver_1.recursive_cg_solve(graph, utilities, 0);
-console.log(cg);
+console.log('Recursive solution: ', cg);
 /**
  * //const tf = require('@tensorflow/tfjs')
 //require('@tensorflow/tfjs-node')
