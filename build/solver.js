@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.mwis_dp = exports.recursive_cg_solve = void 0;
 const pass = () => { return 0; };
-exports.recursive_cg_solve = (cg, utilities, n) => {
+function recursive_cg_solve(cg, utilities, n) {
     var _a;
     const init_CGnodes = [...cg.keys()]; //initial nodes
     if (cg.has(n.toString())) {
@@ -33,7 +33,7 @@ exports.recursive_cg_solve = (cg, utilities, n) => {
             if (n <= init_CGnodes.length) {
                 console.log('Recursive');
                 console.log('Remained nodes: ', cg);
-                return exports.recursive_cg_solve(cg, utilities, n);
+                return recursive_cg_solve(cg, utilities, n);
             }
             else {
                 return cg;
@@ -50,7 +50,7 @@ exports.recursive_cg_solve = (cg, utilities, n) => {
             if (n <= init_CGnodes.length) {
                 console.log('Recursive');
                 console.log('Remained nodes: ', cg);
-                return exports.recursive_cg_solve(cg, utilities, n);
+                return recursive_cg_solve(cg, utilities, n);
             }
             else {
                 return cg;
@@ -63,14 +63,15 @@ exports.recursive_cg_solve = (cg, utilities, n) => {
         if (n <= init_CGnodes.length) {
             console.log('Recursive');
             console.log('Remained nodes: ', cg);
-            return exports.recursive_cg_solve(cg, utilities, n);
+            return recursive_cg_solve(cg, utilities, n);
         }
         else {
             return cg;
         }
     }
-};
-exports.mwis_dp = (cg, utilities) => {
+}
+exports.recursive_cg_solve = recursive_cg_solve;
+function mwis_dp(cg, utilities) {
     /**
     * A Dynamic Programming heuristic algorithm for solving:
     max. sum_i[(a_i)*x_i)]
@@ -78,30 +79,55 @@ exports.mwis_dp = (cg, utilities) => {
     *
     * complexity O(n) where n is the number of nodes in the CG
     */
-    var _a;
-    // global variables
+    var _a, _b;
+    // internal global variables initialization
+    const start = new Date().getTime();
     const nVertex = [...cg.keys()].length;
-    console.log('nVertex: ', nVertex);
-    const opt_sol = [];
+    console.log('number of vertex in the initial CG: ', nVertex);
+    const opt_sol = new Set(); //Optimal final solution
     for (let i = 0; i < nVertex; i++) {
         if (cg.has(i.toString())) {
+            if (opt_sol.has(i.toString())) {
+                break;
+            }
+            console.log('Tested node: ', i);
             const conf_nodes = cg.get(i.toString()); //conflict nodes of i
             console.log('conflict nodes: ', conf_nodes);
             const u_tot = [];
-            u_tot.push((_a = utilities.get(i.toString())) !== null && _a !== void 0 ? _a : pass());
+            u_tot.push((_a = utilities.get(i.toString())) !== null && _a !== void 0 ? _a : 0);
+            console.log('Utility tested node: ', u_tot);
             // fill u_tot with total utilities
-            conf_nodes === null || conf_nodes === void 0 ? void 0 : conf_nodes.forEach(e => e.forEach(s => { var _a; return u_tot.push((_a = utilities.get(s)) !== null && _a !== void 0 ? _a : pass()); }));
-            console.log('u_tot: ', u_tot);
+            conf_nodes === null || conf_nodes === void 0 ? void 0 : conf_nodes.forEach(e => e.forEach(s => { var _a; return u_tot.push((_a = utilities.get(s)) !== null && _a !== void 0 ? _a : 0); }));
+            console.log('Total utilities: ', u_tot);
             // max utility
             const max_u = Math.max(...u_tot);
             console.log('max utility: ', max_u);
-            // get node with utility equal to max_u
-            const opt_node = [...utilities.keys()].find(key => utilities.get(key) == max_u);
+            // get node with utility equal to max_u (TODO: build a method for obtaining a map(id, utility) just for the sub-problem considered)
+            const opt_node = (_b = [...utilities.keys()].find(key => utilities.get(key) == max_u)) !== null && _b !== void 0 ? _b : '0'; //get key from value
             console.log('opt_node: ', opt_node);
-            opt_sol.push(opt_node !== null && opt_node !== void 0 ? opt_node : pass().toString());
-            conf_nodes === null || conf_nodes === void 0 ? void 0 : conf_nodes.delete(opt_sol);
-            conf_nodes === null || conf_nodes === void 0 ? void 0 : conf_nodes.forEach(e => e.forEach(s => cg.delete(s)));
+            opt_sol.add(opt_node);
+            //delete not optimal nodes
+            if (opt_node != i.toString()) {
+                console.log('Delete node: ', i);
+                cg.delete(i.toString());
+                const nodes_deleted = [];
+                conf_nodes === null || conf_nodes === void 0 ? void 0 : conf_nodes.forEach(e => e.forEach(s => { if (s != opt_node)
+                    nodes_deleted.push(s); }));
+                nodes_deleted.forEach(e => cg.delete(e));
+                console.log('Deleted nodes: ', nodes_deleted);
+            }
+            else {
+                const nodes_deleted = [];
+                conf_nodes === null || conf_nodes === void 0 ? void 0 : conf_nodes.forEach(e => e.forEach(s => { if (s != opt_node)
+                    nodes_deleted.push(s); }));
+                nodes_deleted === null || nodes_deleted === void 0 ? void 0 : nodes_deleted.forEach(e => cg.delete(e));
+                console.log('Deleted Nodes: ', nodes_deleted);
+            }
         }
     }
-    return opt_sol;
-};
+    const end = new Date().getTime();
+    const elapsed = end - start;
+    console.log('===== Optimization done ===== \n Elapsed time: ', elapsed, '[ms].');
+    return [opt_sol, cg];
+}
+exports.mwis_dp = mwis_dp;

@@ -53,12 +53,16 @@ let nodes = [
     }
 ];
 const utilities = conflictGraph_1.get_utilities(nodes); //Map(ID, Utility)
+console.log('First CG:');
 const graph = conflictGraph_1.makeCGfromNodes(nodes);
-console.log('*****Start solver*****');
-const opt_sol = solver_1.mwis_dp(graph, utilities);
+console.log('Second CG:');
+const graph_1 = conflictGraph_1.makeCGfromNodes(nodes);
+console.log('===== Start solver =====');
+const [opt_sol, opt_graph] = solver_1.mwis_dp(graph, utilities);
 console.log(' MWIS Dynamic Programming Solution: ', opt_sol);
+console.log(' MWIS Dynamic Programming Optimal Graph: ', opt_graph);
 console.log('===== Recursive algorithm started =====');
-const cg = solver_1.recursive_cg_solve(graph, utilities, 0);
+const cg = solver_1.recursive_cg_solve(graph_1, utilities, 0);
 console.log('Recursive solution: ', cg);
 /**
  * //const tf = require('@tensorflow/tfjs')
