@@ -20,7 +20,7 @@ let nodes: Node[] = [
            [board1, ['1']],
            [borard3, ['1', '4']]
        ]),
-       tickets: []
+       tickets: new Set()
    },
 
    {
@@ -32,7 +32,7 @@ let nodes: Node[] = [
            [board1, ['0']],
            [borard3, ['0', '4']]
        ]),
-       tickets: []
+       tickets: new Set()
    },
 
    {
@@ -43,7 +43,7 @@ let nodes: Node[] = [
        dependencies: new Map([
            [board2, ['3', '4']]
        ]),
-       tickets: []
+       tickets: new Set()
    },
 
    {
@@ -54,7 +54,7 @@ let nodes: Node[] = [
        dependencies: new Map([
            [board2, ['2', '4']]
        ]),
-       tickets: []
+       tickets: new Set()
    },
 
    {
@@ -66,7 +66,7 @@ let nodes: Node[] = [
            [board2, ['2', '3']],
            [borard3, ['0', '1']]
            ]),
-      tickets: []
+      tickets: new Set()
    },
 
    {
@@ -74,7 +74,7 @@ let nodes: Node[] = [
      start: new Date('2020-01-05'),
      utility: 450,
      balance: Math.random()*1000,
-     tickets: []
+     tickets: new Set()
     }
 ]
 
@@ -116,4 +116,4 @@ doExtraction(lucky_nodes, hash)
 
 console.log('Final Lucky Nodes & their tickets: ', lucky_nodes)
 
-lucky_nodes.forEach(node => console.log(`number of tickets for node ${node.id}, with utility=${node.utility}: ${node.tickets.length}`))
+lucky_nodes.forEach(node => console.log(`number of tickets for node ${node.id}, with utility=${node.utility} gets ${[...node.tickets.values()].length} tickets (${Math.round(([...node.tickets.values()].length/1000)*100)} % of MaxNumberOfTickets)`))

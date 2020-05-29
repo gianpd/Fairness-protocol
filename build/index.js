@@ -21,7 +21,7 @@ let nodes = [
             [board1, ['1']],
             [borard3, ['1', '4']]
         ]),
-        tickets: []
+        tickets: new Set()
     },
     {
         id: '1',
@@ -32,7 +32,7 @@ let nodes = [
             [board1, ['0']],
             [borard3, ['0', '4']]
         ]),
-        tickets: []
+        tickets: new Set()
     },
     {
         id: '2',
@@ -42,7 +42,7 @@ let nodes = [
         dependencies: new Map([
             [board2, ['3', '4']]
         ]),
-        tickets: []
+        tickets: new Set()
     },
     {
         id: '3',
@@ -52,7 +52,7 @@ let nodes = [
         dependencies: new Map([
             [board2, ['2', '4']]
         ]),
-        tickets: []
+        tickets: new Set()
     },
     {
         id: '4',
@@ -63,14 +63,14 @@ let nodes = [
             [board2, ['2', '3']],
             [borard3, ['0', '1']]
         ]),
-        tickets: []
+        tickets: new Set()
     },
     {
         id: '5',
         start: new Date('2020-01-05'),
         utility: 450,
         balance: Math.random() * 1000,
-        tickets: []
+        tickets: new Set()
     }
 ];
 // Init Collection of nodes
@@ -101,4 +101,4 @@ console.log('Final Lucky Nodes: ', lucky_nodes);
 const hash = hasha_1.default('Initial hash', { algorithm: 'sha256' });
 board_1.doExtraction(lucky_nodes, hash);
 console.log('Final Lucky Nodes & their tickets: ', lucky_nodes);
-lucky_nodes.forEach(node => console.log(`number of tickets for node ${node.id}, with utility=${node.utility}: ${node.tickets.length}`));
+lucky_nodes.forEach(node => console.log(`number of tickets for node ${node.id}, with utility=${node.utility} gets ${[...node.tickets.values()].length} tickets (${Math.round(([...node.tickets.values()].length / 1000) * 100)} % of MaxNumberOfTickets)`));

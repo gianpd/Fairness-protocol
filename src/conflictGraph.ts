@@ -2,13 +2,14 @@ export type ID = string;
 export type BoardMap = Map<number, ID[]>
 export type Graph = Map<ID, Set<ID[]>>;
 
+
 export interface Node  {
     readonly id: ID;
     readonly start: Date;
     readonly utility: number;
     readonly balance: number;
     readonly dependencies?: BoardMap;
-    tickets: number[]
+    tickets: Set<number>
     
 }
 

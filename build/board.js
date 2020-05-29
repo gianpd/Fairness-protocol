@@ -118,7 +118,7 @@ function doExtraction(nodes, hash) {
         const per_utility = u_n / tot_utility;
         const num_tickets = Math.round(per_utility * Maxtickets);
         getTickets(hash, num_tickets, tickets);
-        node.tickets = tickets;
+        node.tickets = new Set([...tickets]);
     }
 }
 exports.doExtraction = doExtraction;
