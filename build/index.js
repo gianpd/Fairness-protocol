@@ -5,6 +5,7 @@ const solver_1 = require("./solver");
 let board1 = Date.now();
 let board2 = board1 + Date.now() + Math.random();
 let borard3 = board2 + Date.now() + Math.random();
+// Init nodes
 let nodes = [
     {
         id: '0',
@@ -12,7 +13,8 @@ let nodes = [
         utility: 100,
         balance: Math.random() * 1000,
         dependencies: new Map([
-            [board1, ['1']]
+            [board1, ['1']],
+            [borard3, ['1', '4']]
         ])
     },
     {
@@ -21,7 +23,8 @@ let nodes = [
         utility: 70,
         balance: Math.random() * 1000,
         dependencies: new Map([
-            [board1, ['0']]
+            [board1, ['0']],
+            [borard3, ['0', '4']]
         ])
     },
     {
@@ -49,21 +52,29 @@ let nodes = [
         balance: Math.random() * 1000,
         dependencies: new Map([
             [board2, ['2', '3']],
+            [borard3, ['0', '1']]
         ])
     }
 ];
-const utilities = conflictGraph_1.get_utilities(nodes); //Map(ID, Utility)
+// Init CG object
+let CG = new conflictGraph_1.ConflictGraph(nodes.length);
+// Get Utilities from nodes
+const utilities = CG.get_utilities(nodes);
+console.log('utilities: ', utilities);
 console.log('First CG:');
-const graph = conflictGraph_1.makeCGfromNodes(nodes);
+const graph = CG.makeCGfromNodes(nodes);
+console.log('Graph:', graph);
 console.log('Second CG:');
-const graph_1 = conflictGraph_1.makeCGfromNodes(nodes);
+const graph_1 = CG.makeCGfromNodes(nodes);
 console.log('===== Start solver =====');
 const [opt_sol, opt_graph] = solver_1.mwis_dp(graph, utilities);
 console.log(' MWIS Dynamic Programming Solution: ', opt_sol);
 console.log(' MWIS Dynamic Programming Optimal Graph: ', opt_graph);
 console.log('===== Recursive algorithm started =====');
+const start = new Date().getTime();
 const cg = solver_1.recursive_cg_solve(graph_1, utilities, 0);
-console.log('Recursive solution: ', cg);
+const elapsed = new Date().getTime() - start;
+console.log('Recursive solution: ', cg, 'Elapsed time: ', elapsed, '[ms]');
 /**
  * //const tf = require('@tensorflow/tfjs')
 //require('@tensorflow/tfjs-node')

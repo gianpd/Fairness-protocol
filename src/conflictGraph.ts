@@ -5,30 +5,21 @@ export type Graph = Map<ID, Set<ID[]>>;
 export interface Node  {
     readonly id: ID;
     readonly start: Date;
-    utility: number;
-    balance: number;
+    readonly utility: number;
+    readonly balance: number;
     readonly dependencies?: BoardMap;
     
 }
-
-//export interface SuperNode extends Node {
-
-//}
-
-
 /**
  * Conflict Graph from nodes: creates a CG for nodes having dependencies
  */
-
-
-
-export class conflictGraph  {
+export class ConflictGraph  {
     private nNodes: number;
-    private utilities: number[]
+    
 
-    constructor(nNodes: number, utilities: number[]) {
+    constructor(nNodes: number) {
         this.nNodes = nNodes
-        this.utilities = utilities
+        
     }
 
     get nVertex(): number {
@@ -42,12 +33,6 @@ export class conflictGraph  {
         this.nNodes = value;
     }
 
-    get utility(): number[] {
-        return this.utilities
-    }
-
-    
-
     makeCGfromNodes = (nodes: Node[]): Graph => {
         const graph: Graph = new Map();
         //const conflict: ID[] = [];
@@ -55,42 +40,21 @@ export class conflictGraph  {
         for (const n of nodes) {
             console.log('node id: ', n.id, 'dependecies: ', n.dependencies)
             if (n.dependencies) {
-                graph.set(n.id, new Set([...n.dependencies.values()]))
+                const dependecies: string[] = []
+                n.dependencies.forEach(e => e.forEach(s => dependecies.push(s)))
+                const Udependecies = [...new Set([...dependecies])]  //Do an array with unique dependencies coming from different Boards
+                graph.set(n.id, new Set([Udependecies]))
            }
        }
-       
        return graph;
        };
-    
-       get_utilities = (nodes: Node[]): Map<string, number> => {
+   
+
+    get_utilities = (nodes: Node[]): Map<string, number> => {
         let utilities: Map<string, number> = new Map();
         //nodes.forEach(n => utilities.push(n.utility))
         nodes.forEach(n => utilities.set(n.id, n.utility))
         
         return utilities
     }
-
-}
-
- export const makeCGfromNodes = (nodes: Node[]): Graph => {
-     const graph: Graph = new Map();
-     //const conflict: ID[] = [];
-     
-     for (const n of nodes) {
-         console.log('node id: ', n.id, 'dependecies: ', n.dependencies)
-         if (n.dependencies) {
-             graph.set(n.id, new Set([...n.dependencies.values()]))
-        }
-    }
-    
-    return graph;
-    };
-
-
-export const get_utilities = (nodes: Node[]): Map<string, number> => {
-    let utilities: Map<string, number> = new Map();
-    //nodes.forEach(n => utilities.push(n.utility))
-    nodes.forEach(n => utilities.set(n.id, n.utility))
-    
-    return utilities
 }
