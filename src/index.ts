@@ -1,4 +1,4 @@
-import { Node, ConflictGraph } from "./conflictGraph";
+import { Node, ConflictGraph, NodesCollection } from "./conflictGraph";
 import { recursive_cg_solve, mwis_dp, get_lucky_nodes } from './solver'
 
 
@@ -53,7 +53,7 @@ let nodes: Node[] = [
    {
        id: '4',
        start: new Date('2020-01-02'),
-       utility: 10000,
+       utility: 100,
        balance: Math.random()*1000,
        dependencies: new Map([
            [board2, ['2', '3']],
@@ -68,6 +68,12 @@ let nodes: Node[] = [
      balance: Math.random()*1000,
     }
 ]
+
+// Init Collection of nodes
+
+let nodeCollection = new NodesCollection(nodes)
+
+
 
 // Init CG object
 let CG = new ConflictGraph(nodes.length)
@@ -90,11 +96,12 @@ const elapsed = new Date().getTime() - start
 console.log('Recursive solution: ', cg, 'Elapsed time: ', elapsed, '[ms]')
 
 
-//Get Lucky nodes
+//Get final Lucky nodes
+const lucky_nodes = nodeCollection.get_lucky_nodes(nodes, opt_sol)
+console.log('Final Lucky Nodes: ', lucky_nodes)
 
-const final_nodes = get_lucky_nodes(nodes, opt_sol)
 
-console.log('Final Nodes: ', final_nodes)
+
 
 
 

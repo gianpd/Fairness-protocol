@@ -1,6 +1,34 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.get_node_from_id = exports.ConflictGraph = void 0;
+exports.ConflictGraph = exports.NodesCollection = void 0;
+/**
+ * NodesCollection class: it manages a collection of nodes, allowing to get the final Lucky nodes having the right to be part of the Lottery exctraction
+ */
+class NodesCollection {
+    constructor(nodes = []) {
+        this.nodes = nodes;
+        // no statements required
+    }
+    addNode(node) {
+        this.nodes.push(node);
+    }
+    getNodeById(id) {
+        return this.nodes.find(node => node.id === id);
+    }
+    get_lucky_nodes(nodes, cnodes) {
+        // get the final nodes having the right to do the lottery extraction. 
+        let lucky_nodes = [];
+        let final_nodes = [];
+        //add nodes without dependencies
+        nodes.forEach(e => { if (!e.dependencies)
+            lucky_nodes.push(e.id); });
+        //add nodes coming from the conflict graph's optimal solution
+        cnodes.forEach(e => lucky_nodes.push(e));
+        lucky_nodes.forEach(nodeId => final_nodes.push(this.getNodeById(nodeId)));
+        return final_nodes;
+    }
+}
+exports.NodesCollection = NodesCollection;
 /**
  * Conflict Graph from nodes: creates a CG for nodes having dependencies
  */
@@ -39,7 +67,3 @@ class ConflictGraph {
     }
 }
 exports.ConflictGraph = ConflictGraph;
-function get_node_from_id(id) {
-    pass;
-}
-exports.get_node_from_id = get_node_from_id;

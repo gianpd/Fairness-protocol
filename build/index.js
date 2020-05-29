@@ -48,7 +48,7 @@ let nodes = [
     {
         id: '4',
         start: new Date('2020-01-02'),
-        utility: 10000,
+        utility: 100,
         balance: Math.random() * 1000,
         dependencies: new Map([
             [board2, ['2', '3']],
@@ -62,6 +62,8 @@ let nodes = [
         balance: Math.random() * 1000,
     }
 ];
+// Init Collection of nodes
+let nodeCollection = new conflictGraph_1.NodesCollection(nodes);
 // Init CG object
 let CG = new conflictGraph_1.ConflictGraph(nodes.length);
 // Get Utilities from nodes
@@ -81,9 +83,9 @@ const start = new Date().getTime();
 const cg = solver_1.recursive_cg_solve(graph_1, utilities, 0);
 const elapsed = new Date().getTime() - start;
 console.log('Recursive solution: ', cg, 'Elapsed time: ', elapsed, '[ms]');
-//Get Lucky nodes
-const final_nodes = solver_1.get_lucky_nodes(nodes, opt_sol);
-console.log('Final Nodes: ', final_nodes);
+//Get final Lucky nodes
+const lucky_nodes = nodeCollection.get_lucky_nodes(nodes, opt_sol);
+console.log('Final Lucky Nodes: ', lucky_nodes);
 /**
  * //const tf = require('@tensorflow/tfjs')
 //require('@tensorflow/tfjs-node')

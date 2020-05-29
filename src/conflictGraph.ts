@@ -11,7 +11,42 @@ export interface Node  {
     
 }
 
+/**
+ * NodesCollection class: it manages a collection of nodes, allowing to get the final Lucky nodes having the right to be part of the Lottery exctraction
+ */
 
+export class NodesCollection {
+
+    constructor(public nodes: Node[] = []) {
+      // no statements required
+    }
+
+    addNode(node: Node) {
+        this.nodes.push(node)
+    }
+
+    getNodeById(id: string): Node {
+        return this.nodes.find(node => node.id === id);
+    }
+    
+    get_lucky_nodes(nodes: Node[], cnodes: Set<string>): Node[] {
+        // get the final nodes having the right to do the lottery extraction. 
+    
+        let lucky_nodes: string[] = []
+        let final_nodes: Node[] = []
+        
+        
+        //add nodes without dependencies
+        nodes.forEach(e => { if (!e.dependencies) lucky_nodes.push(e.id)})
+    
+        //add nodes coming from the conflict graph's optimal solution
+        cnodes.forEach(e => lucky_nodes.push(e))
+
+        lucky_nodes.forEach(nodeId => final_nodes.push(this.getNodeById(nodeId)))
+    
+        return final_nodes
+    }
+}
 
 /**
  * Conflict Graph from nodes: creates a CG for nodes having dependencies
@@ -60,8 +95,4 @@ export class ConflictGraph  {
         
         return utilities
     }
-
-    
 }
-
-
