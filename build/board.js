@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.doStatistics = void 0;
+exports.doExtraction = exports.doStatistics = void 0;
 const functions_1 = require("./functions");
 const hasha_1 = __importDefault(require("hasha")); //default sha512
 function getTickets(hash, numberOfTickets, accumulator) {
@@ -106,3 +106,19 @@ function doStatistics() {
     return data;
 }
 exports.doStatistics = doStatistics;
+function doExtraction(nodes, hash) {
+    //do a private lottery for each nodes, such that each node can save its extracted tickets in its wallet
+    //compute sum of utilities
+    const Maxtickets = 1000;
+    let tot_utility = 0;
+    nodes.forEach(e => tot_utility += e.utility);
+    for (const node of nodes) {
+        let tickets = [];
+        const u_n = node.utility;
+        const per_utility = u_n / tot_utility;
+        const num_tickets = Math.round(per_utility * Maxtickets);
+        getTickets(hash, num_tickets, tickets);
+        node.tickets = tickets;
+    }
+}
+exports.doExtraction = doExtraction;

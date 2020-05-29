@@ -1,7 +1,12 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const conflictGraph_1 = require("./conflictGraph");
 const solver_1 = require("./solver");
+const board_1 = require("./board");
+const hasha_1 = __importDefault(require("hasha"));
 let board1 = Date.now();
 let board2 = board1 + Date.now() + Math.random();
 let borard3 = board2 + Date.now() + Math.random();
@@ -15,7 +20,8 @@ let nodes = [
         dependencies: new Map([
             [board1, ['1']],
             [borard3, ['1', '4']]
-        ])
+        ]),
+        tickets: []
     },
     {
         id: '1',
@@ -25,7 +31,8 @@ let nodes = [
         dependencies: new Map([
             [board1, ['0']],
             [borard3, ['0', '4']]
-        ])
+        ]),
+        tickets: []
     },
     {
         id: '2',
@@ -34,7 +41,8 @@ let nodes = [
         balance: Math.random() * 1000,
         dependencies: new Map([
             [board2, ['3', '4']]
-        ])
+        ]),
+        tickets: []
     },
     {
         id: '3',
@@ -43,7 +51,8 @@ let nodes = [
         balance: Math.random() * 1000,
         dependencies: new Map([
             [board2, ['2', '4']]
-        ])
+        ]),
+        tickets: []
     },
     {
         id: '4',
@@ -53,13 +62,15 @@ let nodes = [
         dependencies: new Map([
             [board2, ['2', '3']],
             [borard3, ['0', '1']]
-        ])
+        ]),
+        tickets: []
     },
     {
         id: '5',
         start: new Date('2020-01-05'),
         utility: 450,
         balance: Math.random() * 1000,
+        tickets: []
     }
 ];
 // Init Collection of nodes
@@ -86,71 +97,8 @@ console.log('Recursive solution: ', cg, 'Elapsed time: ', elapsed, '[ms]');
 //Get final Lucky nodes
 const lucky_nodes = nodeCollection.get_lucky_nodes(nodes, opt_sol);
 console.log('Final Lucky Nodes: ', lucky_nodes);
-/**
- * //const tf = require('@tensorflow/tfjs')
-//require('@tensorflow/tfjs-node')
-import * as tf from '@tensorflow/tfjs'
-
-const argparse = require('argparse')
-
-const data = require('./data');
-const model = require('./model');
-
-
-
-
-async function run(epochs: any, batchSize: any, modelSavePath: any) {
-    await data.loadData();
-  
-    const {images: trainImages, labels: trainLabels} = data.getTrainData();
-    model.summary();
-  
-    let epochBeginTime;
-    let millisPerStep;
-    const validationSplit = 0.15;
-    const numTrainExamplesPerEpoch =
-        trainImages.shape[0] * (1 - validationSplit);
-    const numTrainBatchesPerEpoch =
-        Math.ceil(numTrainExamplesPerEpoch / batchSize);
-    await model.fit(trainImages, trainLabels, {
-      epochs,
-      batchSize,
-      validationSplit
-    });
-
-    const {images: testImages, labels: testLabels} = data.getTestData();
-    const evalOutput = model.evaluate(testImages, testLabels);
-  
-    console.log(
-        `\nEvaluation result:\n` +
-        `  Loss = ${evalOutput[0].dataSync()[0].toFixed(3)}; `+
-        `Accuracy = ${evalOutput[1].dataSync()[0].toFixed(3)}`);
-  
-    if (modelSavePath != null) {
-      await model.save(`file://${modelSavePath}`);
-      console.log(`Saved model to path: ${modelSavePath}`);
-    }
-  }
-
-  const parser = new argparse.ArgumentParser({
-    description: 'TensorFlow.js-Node MNIST Example.',
-    addHelp: true
-  });
-  parser.addArgument('--epochs', {
-    type: 'int',
-    defaultValue: 20,
-    help: 'Number of epochs to train the model for.'
-  });
-  parser.addArgument('--batch_size', {
-    type: 'int',
-    defaultValue: 128,
-    help: 'Batch size to be used during model training.'
-  })
-  parser.addArgument('--model_save_path', {
-    type: 'string',
-    help: 'Path to which the model will be saved after training.'
-  });
-  const args = parser.parseArgs();
-  
-  run(args.epochs, args.batch_size, args.model_save_path);
- */
+//Simulate Lottery Extraction
+const hash = hasha_1.default('Initial hash', { algorithm: 'sha256' });
+board_1.doExtraction(lucky_nodes, hash);
+console.log('Final Lucky Nodes & their tickets: ', lucky_nodes);
+lucky_nodes.forEach(node => console.log(`number of tickets for node ${node.id}, with utility=${node.utility}: ${node.tickets.length}`));

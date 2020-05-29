@@ -1,4 +1,4 @@
-import { Graph, Node } from './conflictGraph'
+import { Graph } from './conflictGraph'
 
 export function recursive_cg_solve(cg: Graph, utilities: Map<string, number>, n: number): Graph|undefined {
 

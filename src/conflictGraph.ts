@@ -8,6 +8,7 @@ export interface Node  {
     readonly utility: number;
     readonly balance: number;
     readonly dependencies?: BoardMap;
+    tickets: number[]
     
 }
 

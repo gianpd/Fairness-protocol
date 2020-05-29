@@ -1,4 +1,5 @@
 import { hexToBinary, binaryXOR } from './functions';
+import { Node } from './conflictGraph'
 import hasha from 'hasha';  //default sha512
 
 
@@ -152,4 +153,23 @@ export function doStatistics(): Data[] {
   })
   console.log('ls_dict: ', ls_dict)
   return data
+}
+
+export function doExtraction(nodes: Node[], hash: string): void {
+
+  //do a private lottery for each nodes, such that each node can save its extracted tickets in its wallet
+
+  //compute sum of utilities
+  const Maxtickets = 1000
+  let tot_utility = 0
+  nodes.forEach(e => tot_utility += e.utility)
+
+  for (const node of nodes) {
+    let tickets: Ticket[] = []
+    const u_n = node.utility
+    const per_utility = u_n / tot_utility
+    const num_tickets = Math.round(per_utility * Maxtickets)
+    getTickets(hash, num_tickets, tickets)
+    node.tickets = tickets
+  }
 }
