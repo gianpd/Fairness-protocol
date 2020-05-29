@@ -9,7 +9,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/GianPICT4SS/Fairness-protocol"
+    "url": "https://github.com/gianpDomiziani/Fairness-protocol"
   },
   "keywords": [],
   "author": "GianPICT4SS",
@@ -20,11 +20,15 @@
     "@tensorflow/tfjs-node": "^1.7.4",
     "@types/argparse": "^1.0.38",
     "@types/cytoscape": "^3.14.0",
+    "@types/hasha": "^3.0.1",
+    "@types/lodash": "^4.14.153",
     "@types/node": "^14.0.1",
     "@types/seedrandom": "^2.4.28",
     "argparse": "1.0.10",
     "concurrently": "^5.2.0",
     "cytoscape": "^3.15.0",
+    "hasha": "^5.2.0",
+    "lodash": "^4.17.15",
     "nodemon": "^2.0.4",
     "seedrandom": "^3.0.5",
     "typescript": "^3.9.2"

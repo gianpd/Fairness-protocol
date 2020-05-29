@@ -1,7 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.mwis_dp = exports.recursive_cg_solve = void 0;
-const pass = () => { return 0; };
 function recursive_cg_solve(cg, utilities, n) {
     var _a;
     const init_CGnodes = [...cg.keys()]; //initial nodes
@@ -11,7 +10,7 @@ function recursive_cg_solve(cg, utilities, n) {
         const testedNode = n.toString();
         console.log('Tested node: ', testedNode);
         // calculate utilities of consflict nodes
-        const u = (_a = utilities.get(testedNode)) !== null && _a !== void 0 ? _a : pass(); //utility test node
+        const u = (_a = utilities.get(testedNode)) !== null && _a !== void 0 ? _a : 0; //utility test node
         //let u_conf = 0
         //nodes_conf_n.forEach(e => u_conf += utilities.get(e))
         console.log(`Utility node ${n}: ${u}`);
@@ -22,7 +21,7 @@ function recursive_cg_solve(cg, utilities, n) {
         const n_conflicts = nodes_conf_n.length;
         console.log('number of conflits: ', n_conflicts);
         let u_conf = 0;
-        nodes_conf_n.forEach(e => { var _a; return u_conf += (_a = utilities.get(e)) !== null && _a !== void 0 ? _a : pass(); });
+        nodes_conf_n.forEach(e => { var _a; return u_conf += (_a = utilities.get(e)) !== null && _a !== void 0 ? _a : 0; });
         console.log(`Total utility conflict nodes: ${u_conf}`);
         if (u_conf > u * n_conflicts) {
             cg.delete(testedNode);

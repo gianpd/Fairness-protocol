@@ -1,6 +1,7 @@
 import { Node, ConflictGraph } from "./conflictGraph";
 import { recursive_cg_solve, mwis_dp } from './solver'
 
+
 let board1 = Date.now()
 let board2 = board1 + Date.now() + Math.random()
 let borard3 = board2 + Date.now() + Math.random()
@@ -60,7 +61,6 @@ let nodes: Node[] = [
            ])
    }
 ]
-
 
 // Init CG object
 let CG = new ConflictGraph(nodes.length)

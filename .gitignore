@@ -1,2 +1,7 @@
 /node_modules
+/src/data.ts
+/src/model.ts
+/build/data.js
+/build/model.js
+
 

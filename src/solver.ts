@@ -1,7 +1,7 @@
 import { Graph } from './conflictGraph'
 
 
-const pass = (): number => {return 0}
+
 
 
 
@@ -16,7 +16,7 @@ export function recursive_cg_solve(cg: Graph, utilities: Map<string, number>, n:
         const testedNode = n.toString()
         console.log('Tested node: ', testedNode)
         // calculate utilities of consflict nodes
-        const u = utilities.get(testedNode) ?? pass() //utility test node
+        const u = utilities.get(testedNode) ?? 0 //utility test node
         //let u_conf = 0
         //nodes_conf_n.forEach(e => u_conf += utilities.get(e))
         console.log(`Utility node ${n}: ${u}`)
@@ -29,7 +29,7 @@ export function recursive_cg_solve(cg: Graph, utilities: Map<string, number>, n:
         console.log('number of conflits: ', n_conflicts)
 
         let u_conf = 0
-        nodes_conf_n.forEach(e => u_conf += utilities.get(e) ?? pass())
+        nodes_conf_n.forEach(e => u_conf += utilities.get(e) ?? 0)
         console.log(`Total utility conflict nodes: ${u_conf}`)
         if (u_conf > u*n_conflicts) {
             cg.delete(testedNode)
