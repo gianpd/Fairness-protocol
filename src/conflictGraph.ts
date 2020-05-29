@@ -10,6 +10,9 @@ export interface Node  {
     readonly dependencies?: BoardMap;
     
 }
+
+
+
 /**
  * Conflict Graph from nodes: creates a CG for nodes having dependencies
  */
@@ -38,8 +41,8 @@ export class ConflictGraph  {
         //const conflict: ID[] = [];
         
         for (const n of nodes) {
-            console.log('node id: ', n.id, 'dependecies: ', n.dependencies)
             if (n.dependencies) {
+                console.log('node id: ', n.id, 'dependecies: ', n.dependencies)
                 const dependecies: string[] = []
                 n.dependencies.forEach(e => e.forEach(s => dependecies.push(s)))
                 const Udependecies = [...new Set([...dependecies])]  //Do an array with unique dependencies coming from different Boards
@@ -57,4 +60,8 @@ export class ConflictGraph  {
         
         return utilities
     }
+
+    
 }
+
+

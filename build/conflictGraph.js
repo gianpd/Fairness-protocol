@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ConflictGraph = void 0;
+exports.get_node_from_id = exports.ConflictGraph = void 0;
 /**
  * Conflict Graph from nodes: creates a CG for nodes having dependencies
  */
@@ -10,8 +10,8 @@ class ConflictGraph {
             const graph = new Map();
             //const conflict: ID[] = [];
             for (const n of nodes) {
-                console.log('node id: ', n.id, 'dependecies: ', n.dependencies);
                 if (n.dependencies) {
+                    console.log('node id: ', n.id, 'dependecies: ', n.dependencies);
                     const dependecies = [];
                     n.dependencies.forEach(e => e.forEach(s => dependecies.push(s)));
                     const Udependecies = [...new Set([...dependecies])]; //Do an array with unique dependencies coming from different Boards
@@ -39,3 +39,7 @@ class ConflictGraph {
     }
 }
 exports.ConflictGraph = ConflictGraph;
+function get_node_from_id(id) {
+    pass;
+}
+exports.get_node_from_id = get_node_from_id;

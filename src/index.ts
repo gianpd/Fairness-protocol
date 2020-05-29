@@ -1,5 +1,5 @@
 import { Node, ConflictGraph } from "./conflictGraph";
-import { recursive_cg_solve, mwis_dp } from './solver'
+import { recursive_cg_solve, mwis_dp, get_lucky_nodes } from './solver'
 
 
 let board1 = Date.now()
@@ -59,7 +59,14 @@ let nodes: Node[] = [
            [board2, ['2', '3']],
            [borard3, ['0', '1']]
            ])
-   }
+   },
+
+   {
+     id: '5',
+     start: new Date('2020-01-05'),
+     utility: 450,
+     balance: Math.random()*1000,
+    }
 ]
 
 // Init CG object
@@ -69,7 +76,7 @@ const utilities = CG.get_utilities(nodes)
 console.log('utilities: ', utilities)
 console.log('First CG:')
 const graph = CG.makeCGfromNodes(nodes);
-console.log('Graph:', graph)
+console.log('Conflict Graph:', graph)
 console.log('Second CG:')
 const graph_1 = CG.makeCGfromNodes(nodes);
 console.log('===== Start solver =====')
@@ -83,7 +90,11 @@ const elapsed = new Date().getTime() - start
 console.log('Recursive solution: ', cg, 'Elapsed time: ', elapsed, '[ms]')
 
 
+//Get Lucky nodes
 
+const final_nodes = get_lucky_nodes(nodes, opt_sol)
+
+console.log('Final Nodes: ', final_nodes)
 
 
 

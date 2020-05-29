@@ -1,10 +1,4 @@
-import { Graph } from './conflictGraph'
-
-
-
-
-
-
+import { Graph, Node } from './conflictGraph'
 
 export function recursive_cg_solve(cg: Graph, utilities: Map<string, number>, n: number): Graph|undefined {
 
@@ -79,8 +73,6 @@ export function recursive_cg_solve(cg: Graph, utilities: Map<string, number>, n:
     }
 }
 
-
-
 export function mwis_dp(cg: Graph, utilities: Map<string, number>): [Set<string>, Graph]  {
 /**
 * A Dynamic Programming heuristic algorithm for solving:
@@ -143,5 +135,21 @@ s.t  x_i + x_j <= 1 if (i,j) in CF, where CF is the Conflict Graph for the probl
    return [opt_sol, cg]
 
 }
+
+export function get_lucky_nodes(nodes: Node[], cnodes: Set<string>): string[] {
+    // get the final nodes having the right to do the lottery extraction. 
+
+    let final_nodes: string[] = []
+    
+    
+    //add nodes without dependencies
+    nodes.forEach(e => { if (!e.dependencies) final_nodes.push(e.id)})
+
+    //add nodes coming from the conflict graph's optimal solution
+    cnodes.forEach(e => final_nodes.push(e))
+
+    return final_nodes
+}
+
 
 

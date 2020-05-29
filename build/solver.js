@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.mwis_dp = exports.recursive_cg_solve = void 0;
+exports.get_lucky_nodes = exports.mwis_dp = exports.recursive_cg_solve = void 0;
 function recursive_cg_solve(cg, utilities, n) {
     var _a;
     const init_CGnodes = [...cg.keys()]; //initial nodes
@@ -130,3 +130,14 @@ function mwis_dp(cg, utilities) {
     return [opt_sol, cg];
 }
 exports.mwis_dp = mwis_dp;
+function get_lucky_nodes(nodes, cnodes) {
+    // get the final nodes having the right to do the lottery extraction. 
+    let final_nodes = [];
+    //add nodes without dependencies
+    nodes.forEach(e => { if (!e.dependencies)
+        final_nodes.push(e.id); });
+    //add nodes coming from the conflict graph's optimal solution
+    cnodes.forEach(e => final_nodes.push(e));
+    return final_nodes;
+}
+exports.get_lucky_nodes = get_lucky_nodes;
