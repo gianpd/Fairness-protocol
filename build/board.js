@@ -109,8 +109,8 @@ exports.doStatistics = doStatistics;
 function doExtraction(nodes, hash) {
     //do a private lottery for each nodes, such that each node can save its extracted tickets in its wallet
     //compute sum of utilities
-    const Maxtickets = 1000;
-    let tot_utility = 0;
+    const Maxtickets = 100;
+    let tot_utility = 0; //init Nodes tot_utility
     nodes.forEach(e => tot_utility += e.utility);
     for (const node of nodes) {
         let tickets = [];

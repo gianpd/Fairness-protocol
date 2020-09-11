@@ -90,6 +90,7 @@ s.t  x_i + x_j <= 1 if (i,j) in CF, where CF is the Conflict Graph for the probl
 
 
    for (let i=0; i < nVertex; i++) {
+       //check if node i is present
        if (cg.has(i.toString())) {
            if (opt_sol.has(i.toString())) {
                break

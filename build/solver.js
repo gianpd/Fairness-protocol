@@ -85,6 +85,7 @@ function mwis_dp(cg, utilities) {
     console.log('number of vertex in the initial CG: ', nVertex);
     const opt_sol = new Set(); //Optimal final solution
     for (let i = 0; i < nVertex; i++) {
+        //check if node i is present
         if (cg.has(i.toString())) {
             if (opt_sol.has(i.toString())) {
                 break;

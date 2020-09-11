@@ -38,7 +38,7 @@ let nodes: Node[] = [
    {
        id: '2',
        start: new Date('2020-01-02'),
-       utility: 560,
+       utility: 580,
        balance: Math.random()*1000,
        dependencies: new Map([
            [board2, ['3', '4']]
